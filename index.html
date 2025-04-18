@@ -1,60 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ID Card Generator</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="form-container">
     <h1>Generate Your ID Card</h1>
-    <form id="idForm">
-      <div class="form-field">
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" placeholder="Enter first name" />
-        <span id="firstNameError" class="error"></span>
-      </div>
-      <div class="form-field">
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" placeholder="Enter last name" />
-        <span id="lastNameError" class="error"></span>
-      </div>
-      <div class="form-field">
-        <label for="phoneNumber">Phone Number:</label>
-        <input type="text" id="phoneNumber" placeholder="Enter phone number" />
-        <span id="phoneError" class="error"></span>
-      </div>
-      <div class="form-field">
-        <label for="address">Address:</label>
-        <input type="text" id="address" placeholder="Enter address" />
-        <span id="addressError" class="error"></span>
-      </div>
-      <div class="form-field">
-        <label for="bloodType">Blood Type:</label>
-        <input type="text" id="bloodType" placeholder="Enter blood type" />
-        <span id="bloodTypeError" class="error"></span>
-      </div>
-      <div class="form-field">
-        <label for="photoUpload">Upload Photo:</label>
-        <input type="file" id="photoUpload" accept="image/*" />
-        <span id="photoError" class="error"></span>
-      </div>
-      <div id="photoPreviewContainer"></div>
-      <button type
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName">
+      <span id="firstNameError" class="error"></span>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName">
+      <span id="lastNameError" class="error"></span>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phoneNumber">
+      <span id="phoneError" class="error"></span>
+    </div>
+    <div class="form-group">
+      <label for="address">Address:</label>
+      <input type="text" id="address">
+      <span id="addressError" class="error"></span>
+    </div>
+    <div class="form-group">
+      <label for="bloodType">Blood Type:</label>
+      <input type="text" id="bloodType">
+      <span id="bloodTypeError" class="error"></span>
+    </div>
+    <div class="form-group">
+      <label for="photoUpload">Upload Photo:</label>
+      <input type="file" id="photoUpload" accept="image/*">
+      <span id="photoError" class="error"></span>
+    </div>
+    <button id="generateBtn">Generate ID Cards</button>
+    <button id="downloadBtn" disabled>Download Selected Card</button>
+    <div id="photoPreviewContainer"></div>
+  </div>
+  <div id="idCardsContainer" class="cards-container"></div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
