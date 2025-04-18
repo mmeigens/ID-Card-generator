@@ -7,119 +7,82 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 20px;
+        }
+        .card-preview {
+            border: 1px solid #ccc;
             padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
+            width: 300px;
             text-align: center;
+            margin: auto;
         }
-
-        #id-picture-preview {
-            max-width: 100px;
-            max-height: 100px;
+        .card-preview img {
+            max-width: 100%; /* Ensure the image does not exceed the container width */
+            max-height: 200px; /* Optional: Limit the height */
+            height: auto; /* Maintain aspect ratio */
             display: block;
-            margin: 15px auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            object-fit: cover;
+            margin: 10px auto;
         }
-
-        #generate-card-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        #generate-card-button:hover {
-            background-color: #0056b3;
-        }
-
-        #barcode {
-            margin: 10px 0;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>ID Card Generator</h1>
-        <form id="id-card-form">
-            <label for="id-name">Name:</label>
-            <input type="text" id="id-name" name="id-name" required><br><br>
-
-            <label for="id-picture">Upload Picture:</label>
-            <input type="file" id="id-picture" name="id-picture" accept="image/*"><br><br>
-            <img id="id-picture-preview" src="#" alt="Preview will appear here"><br><br>
-
-            <label for="id-number">ID Number:</label>
-            <input type="text" id="id-number" name="id-number" required><br><br>
-
-            <button type="button" id="generate-card-button" onclick="generateCard()">Generate Card</button>
-        </form>
-
-        <div id="generated-card" style="display:none; margin-top: 20px;">
-            <h2>Generated ID Card</h2>
-            <div id="id-card-preview" style="border: 1px solid #ddd; padding: 15px; border-radius: 10px;">
-                <img id="id-card-picture" src="#" alt="ID Picture" style="width: 100px; height: 100px; border-radius: 8px;">
-                <p id="id-card-name">Name: </p>
-                <p id="id-card-number">ID Number: </p>
-                <svg id="barcode"></svg>
+    <h1>ID Card Generator</h1>
+    <div>
+        <form id="card-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="photo">Photo:</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+            </div>
+            <button type="button" onclick="generateCard()">Generate ID Card</button>
+        </form>
+    </div>
+    <h2>Preview:</h2>
+    <div class="card-preview" id="card-preview">
+        <p>Generated card will appear here.</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode"></script>
     <script>
-        document.getElementById('id-picture').addEventListener('change', function (event) {
-            const preview = document.getElementById('id-picture-preview');
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = '#';
-            }
-        });
-
-        function generateBarcode(text, elementId) {
-            JsBarcode(`#${elementId}`, text, {
-                format: "CODE128",
-                displayValue: true,
-                width: 2,
-                height: 30,
-                textMargin: 2,
-                fontSize: 10,
-            });
-        }
-
         function generateCard() {
-            const name = document.getElementById('id-name').value;
-            const idNumber = document.getElementById('id-number').value;
-            const pictureSrc = document.getElementById('id-picture-preview').src;
+            const name = document.getElementById("name").value;
+            const title = document.getElementById("title").value;
+            const photoInput = document.getElementById("photo");
+            const preview = document.getElementById("card-preview");
 
-            if (!name || !idNumber || pictureSrc === '#') {
-                alert("Please fill out all fields and upload a picture.");
+            if (!photoInput.files[0]) {
+                alert("Please upload a photo!");
                 return;
             }
 
-            document.getElementById('id-card-name').innerText = `Name: ${name}`;
-            document.getElementById('id-card-number').innerText = `ID Number: ${idNumber}`;
-            document.getElementById('id-card-picture').src = pictureSrc;
-
-            generateBarcode(idNumber, 'barcode');
-            document.getElementById('generated-card').style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                preview.innerHTML = `
+                    <div>
+                        <img src="${event.target.result}" alt="ID Card Photo">
+                        <h3>${name}</h3>
+                        <p>${title}</p>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(photoInput.files[0]);
         }
     </script>
 </body>
 </html>
+
 
 
