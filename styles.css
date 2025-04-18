@@ -1,58 +1,100 @@
-/* General Styling */
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
   background-color: #f5f5f5;
-  color: #333;
-}
-
-.container {
-  max-width: 900px;
-  margin: 20px auto;
-  background-color: #fff;
+  margin: 0;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-/* Header */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 h1 {
   text-align: center;
   color: #4a90e2;
-  margin-bottom: 20px;
-}
-
-/* Form Styling */
-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.form-group {
-  flex: 1 1 calc(50% - 20px);
-  display: flex;
-  flex-direction: column;
 }
 
 label {
+  display: block;
+  margin-top: 15px;
   font-weight: bold;
-  margin-bottom: 5px;
-  color: #4a90e2;
 }
 
-input[type="text"],
-input[type="file"] {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .error {
-  font-size: 12px;
-  color: #e
+  color: red;
+  font-size: 0.85em;
+}
+
+#photoPreviewContainer {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#photoPreview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#idCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.id-card {
+  width: 200px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.id-card:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+#downloadBtn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#downloadBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
 
 
 
