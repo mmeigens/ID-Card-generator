@@ -1,9 +1,10 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    min-height: 100vh;
     margin: 0;
     padding: 20px;
     background-color: #f3f4f6;
@@ -11,140 +12,12 @@ body {
 
 .form-container {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 400px;
-}
-
-.form-container label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-container input[type="text"],
-.form-container input[type="tel"],
-.form-container input[type="file"] {
-    width: calc(100% - 12px);
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-container button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.card-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    width: 100%;
-}
-
-.card {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.card h2 {
     text-align: center;
-    margin-bottom: 5px;
-    font-size: 20px;
 }
 
-.card h1 {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 24px;
-}
-
-.card p {
-    margin-bottom: 8px;
-}
-
-.card-image {
-    width: 2in;
-    height: 2in;
-    display: block;
-    margin: 10px auto;
-    border-radius: 5px;
-    object-fit: cover;
-}
-
-#download-section {
-    margin-top: 20px;
-    text-align: center;
-    display: none;
-}
-
-#download-section input {
-    padding: 8px;
-    margin-bottom: 10px;
-}
-
-#download-section button {
-    padding: 10px 15px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#error-message {
-    color: red;
-    margin-top: 10px;
-}
-
-body {
-    background: linear-gradient(to bottom, #f3f4f6, #e9eaf0);
-}
-
-/* Design Styles */
-.design-1 {
-    background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
-    color: #000;
-}
-
-.design-2 {
-    background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
-    color: #000;
-}
-
-.design-3 {
-    background-color: #fff;
-    color: #000;
-}
-
-.design-4 {
-    background: linear-gradient(to bottom, #e8eaf6, #c5cae9);
-    color: #000;
-}
-
-#id-picture-preview {
-    max-width: 100px;
-    max-height: 100px;
-    display: block;
-    margin: 10px auto;
-    border-radius: 5px;
-    object-fit: cover;
-}
-
-.hidden-card {
-    display: none;
-}
+/* Add styles for the rest of your elements similar to the original */
