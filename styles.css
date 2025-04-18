@@ -1,40 +1,37 @@
-/* General styling */
 body {
   font-family: Arial, sans-serif;
+  background-color: #f0f8ff;
   margin: 0;
-  padding: 0;
-  background-color: #f4f4f9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  padding: 20px;
 }
 
 h1 {
+  text-align: center;
   color: #4a90e2;
 }
 
 .form-container {
-  background: white;
+  background-color: white;
+  max-width: 500px;
+  margin: auto;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-label {
+.form-field {
+  margin-bottom: 15px;
+}
+
+.form-field label {
   display: block;
-  margin-top: 10px;
-  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
 }
 
-input {
-  width: 100%;
+.form-field input {
+  width: calc(100% - 20px);
   padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
@@ -45,56 +42,41 @@ button {
   color: white;
   border: none;
   padding: 10px 15px;
+  font-size: 1em;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px 0;
 }
 
 button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
+  background-color: #ccc;
 }
 
-button:hover:enabled {
+button:hover:not(:disabled) {
   background-color: #357ab8;
 }
 
-.error-message {
+#error {
   color: red;
   font-size: 0.9em;
-  display: block;
-  margin-top: -5px;
-  margin-bottom: 10px;
 }
 
-/* Cards styling */
-.cards-container {
+#idCardsContainer {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
   margin-top: 20px;
 }
 
 .id-card {
-  background-color: #ffffff;
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  width: 250px;
-  text-align: center;
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
-.id-card:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.id-card.selected {
+  transform: scale(1.05);
+  border: 2px solid #4a90e2;
 }
 
-.selected {
-  border-color: #4a90e2;
-  box-shadow: 0 0 10px rgba(74, 144, 226, 0.8);
-}
 
 
 
