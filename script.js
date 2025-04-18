@@ -27,10 +27,11 @@ generateBtn.addEventListener("click", () => {
   reader.onload = (e) => {
     const photoURL = e.target.result;
 
-    for (let i = 1; i <= 4; i++) {
+    ["design1", "design2", "design3", "design4"].forEach((design) => {
       const card = document.createElement("div");
-      card.classList.add("id-card");
+      card.classList.add("id-card", design);
       card.innerHTML = `
+        <h2>God's Embassy Ministries</h2>
         <img src="${photoURL}" alt="Student Photo">
         <h3>${firstName} ${lastName}</h3>
         <p>Phone: ${phoneNumber}</p>
@@ -46,7 +47,7 @@ generateBtn.addEventListener("click", () => {
       });
 
       idCardsContainer.appendChild(card);
-    }
+    });
   };
 
   reader.readAsDataURL(photo);
@@ -62,5 +63,6 @@ downloadBtn.addEventListener("click", () => {
     link.click();
   });
 });
+
 
 
