@@ -68,7 +68,7 @@
             position: relative;
             margin-bottom: 20px;
             /* Space between cards */
-            cursor: pointer; /* Indicate clickable */
+            cursor: pointer;
         }
 
         .card h2 {
@@ -115,7 +115,7 @@
             border-radius: 4px;
             cursor: pointer;
             opacity: 0.5;
-            pointer-events: none; /* Initially disabled */
+            pointer-events: none;
         }
 
         #error-message {
@@ -158,7 +158,7 @@
             object-fit: cover;
         }
     </style>
-</head>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>  </head>
 
 <body>
 
@@ -190,7 +190,7 @@
     </div>
 
     <div class="card-container" id="cards-preview">
-        </div>
+    </div>
 
     <div id="download-section">
         <input type="text" id="payment-code" placeholder="Enter Payment Code" id="payment-code">
@@ -286,8 +286,8 @@
             const errorMessageElement = document.getElementById('error-message');
 
             if (!selectedCard && enteredCode) { // Check if a card is selected
-              errorMessageElement.textContent = "Please select a card design.";
-              return;
+                errorMessageElement.textContent = "Please select a card design.";
+                return;
             }
 
             if (paymentCodes.includes(enteredCode) && !usedPaymentCodes.includes(enteredCode)) {
