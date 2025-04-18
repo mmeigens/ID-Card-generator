@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Simplified Student ID Card Generator</title>
+    <title>Student ID Card Generator</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -54,6 +54,9 @@
         .card-container {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
+            /* Allow cards to wrap */
+            gap: 20px;
             width: 100%;
         }
 
@@ -63,39 +66,34 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 300px;
             position: relative;
+            margin-bottom: 20px;
+            /* Space between cards */
+            cursor: pointer; /* Indicate clickable */
         }
 
         .card h2 {
             text-align: center;
             margin-bottom: 5px;
             font-size: 20px;
-            /* Smaller for "Student ID" */
         }
 
         .card h1 {
             text-align: center;
             margin-bottom: 10px;
             font-size: 24px;
-            /* Larger for School Name */
         }
 
         .card p {
             margin-bottom: 8px;
         }
 
-        #card-preview {
-            display: none;
-        }
-
-        #id-picture-preview,
-        #card-image {
+        .card-image {
             width: 2in;
             height: 2in;
             display: block;
             margin: 10px auto;
             border-radius: 5px;
             object-fit: cover;
-            /* Ensures image fills the space */
         }
 
         #download-section {
@@ -116,6 +114,8 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none; /* Initially disabled */
         }
 
         #error-message {
@@ -123,49 +123,39 @@
             margin-top: 10px;
         }
 
-        .design-options {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
+        /* Subtle Background Gradient */
+        body {
+            background: linear-gradient(to bottom, #f3f4f6, #e9eaf0);
         }
 
-        .design-button {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .design-button.selected {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        /* Design Styles (applied dynamically) */
+        /* Design Styles */
         .design-1 {
-            background-color: #e0f7fa;
-            /* Light Teal */
+            background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
             color: #000;
         }
 
         .design-2 {
-            background-color: #f0f0f0;
-            /* Light Gray */
+            background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
             color: #000;
         }
 
         .design-3 {
             background-color: #fff;
-            /* White */
             color: #000;
         }
 
         .design-4 {
-            background-color: #e8eaf6;
-            /* Light Blue */
+            background: linear-gradient(to bottom, #e8eaf6, #c5cae9);
             color: #000;
+        }
+
+        #id-picture-preview {
+            max-width: 100px;
+            max-height: 100px;
+            display: block;
+            margin: 10px auto;
+            border-radius: 5px;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -175,6 +165,11 @@
     <div class="form-container">
         <h2>Student ID Card Information</h2>
         <form id="student-form">
+            <label for="id-picture">Upload ID Picture:</label>
+            <input type="file" id="id-picture" name="id-picture" accept="image/*"
+                onchange="previewImage(this, 'id-picture-preview')" required>
+            <img id="id-picture-preview" src="#" alt="ID Picture Preview" style="display:none;">
+
             <label for="first-name">First Name:</label>
             <input type="text" id="first-name" name="first-name" required>
 
@@ -182,67 +177,31 @@
             <input type="text" id="last-name" name="last-name" required>
 
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone">
+            <input type="tel" id="phone" name="phone" required>
 
             <label for="blood-type">Blood Type:</label>
-            <input type="text" id="blood-type" name="blood-type">
+            <input type="text" id="blood-type" name="blood-type" required>
 
             <label for="address">Address:</label>
-            <input type="text" id="address" name="address">
+            <input type="text" id="address" name="address" required>
 
-            <label for="id-picture">Upload ID Picture:</label>
-            <input type="file" id="id-picture" name="id-picture" accept="image/*"
-                onchange="previewImage(this, 'id-picture-preview')">
-            <img id="id-picture-preview" src="#" alt="ID Picture Preview" style="display:none;">
-
-            <button type="submit">Generate Card</button>
+            <button type="submit">Generate Cards</button>
         </form>
     </div>
 
-    <div class="card-container">
-        <div class="design-options">
-            <button class="design-button design-1 selected" data-design="1">Design 1</button>
-            <button class="design-button design-2" data-design="2">Design 2</button>
-            <button class="design-button design-3" data-design="3">Design 3 (White)</button>
-            <button class="design-button design-4" data-design="4">Design 4</button>
+    <div class="card-container" id="cards-preview">
         </div>
-
-        <div class="card design-1" id="card-preview">
-            <h1>God' Embassy Ministries</h1>
-            <h2>Student ID</h2>
-            <img id="card-image" src="#" alt="Student Photo" style="display:none;">
-            <p><strong>Name:</strong> <span id="card-name"></span></p>
-            <p><strong>Phone:</strong> <span id="card-phone"></span></p>
-            <p><strong>Blood Type:</strong> <span id="card-blood"></span></p>
-            <p><strong>Address:</strong> <span id="card-address"></span></p>
-            <p><strong>Class:</strong> Systematic Theology</p>
-            <p><strong>Student Code:</strong> <span id="card-code"></span></p>
-        </div>
-    </div>
 
     <div id="download-section">
-        <input type="text" id="payment-code" placeholder="Enter Payment Code">
+        <input type="text" id="payment-code" placeholder="Enter Payment Code" id="payment-code">
         <button id="download-button">Download</button>
         <p id="error-message"></p>
     </div>
 
     <script>
-        const correctPaymentCode = "YOUR_PAYMENT_CODE"; // Replace with your actual payment code!
-        let selectedDesign = 1; // Default to Design 1
-
-        document.querySelectorAll('.design-button').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.design-button').forEach(btn => btn.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedDesign = parseInt(this.dataset.design);
-                updateCardDesign();
-            });
-        });
-
-        function updateCardDesign() {
-            const card = document.getElementById('card-preview');
-            card.className = card design-${selectedDesign};
-        }
+        const paymentCodes = ["CODE1", "CODE2", "CODE3", "CODE4"]; // Replace with your actual payment codes
+        const usedPaymentCodes = [];
+        let selectedCard = null;
 
         document.getElementById('student-form').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -254,37 +213,89 @@
             const address = document.getElementById('address').value;
             const idPictureFile = document.getElementById('id-picture').files[0];
 
-            document.getElementById('card-name').textContent = firstName + ' ' + lastName;
-            document.getElementById('card-phone').textContent = phone;
-            document.getElementById('card-blood').textContent = bloodType;
-            document.getElementById('card-address').textContent = address;
-
             const studentCode = firstName.substring(0, 2).toUpperCase() + phone.slice(-4);
-            document.getElementById('card-code').textContent = studentCode;
 
-            if (idPictureFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('card-image').src = e.target.result;
-                    document.getElementById('card-image').style.display = 'block';
-                }
-                reader.readAsDataURL(idPictureFile);
-            } else {
-                document.getElementById('card-image').style.display = 'none';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                document.getElementById('id-picture-preview').src = imageDataUrl;
+                document.getElementById('id-picture-preview').style.display = 'block';
+                generateAllCards(imageDataUrl, firstName, lastName, phone, bloodType, address, studentCode);
             }
-
-            document.getElementById('card-preview').style.display = 'block';
-            document.getElementById('download-section').style.display = 'block';
-            updateCardDesign(); // Ensure initial design is applied
+            reader.readAsDataURL(idPictureFile);
         });
+
+        function generateAllCards(imageDataUrl, firstName, lastName, phone, bloodType, address, studentCode) {
+            const cardsPreview = document.getElementById('cards-preview');
+            cardsPreview.innerHTML = ''; // Clear previous cards
+            selectedCard = null; // Reset selection
+
+            const designs = [
+                'design-1',
+                'design-2',
+                'design-3',
+                'design-4'
+            ];
+
+            designs.forEach((design, index) => {
+                const card = document.createElement('div');
+                card.className = `card ${design}`;
+                card.dataset.designIndex = index; // Store index for selection
+                card.innerHTML = `
+                    <h1>God' Embassy Ministries</h1>
+                    <h2>Student ID</h2>
+                    <img class="card-image" src="${imageDataUrl}" alt="Student Photo">
+                    <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+                    <p><strong>Phone:</strong> ${phone}</p>
+                    <p><strong>Blood Type:</strong> ${bloodType}</p>
+                    <p><strong>Address:</strong> ${address}</p>
+                    <p><strong>Class:</strong> Systematic Theology</p>
+                    <p><strong>Student Code:</strong> ${studentCode}</p>
+                `;
+                card.addEventListener('click', () => {
+                    selectCard(card);
+                });
+                cardsPreview.appendChild(card);
+            });
+
+            document.getElementById('download-section').style.display = 'block';
+            disableDownloadButton(); // Initially disable download button
+        }
+
+        function selectCard(card) {
+            document.querySelectorAll('.card').forEach(c => c.style.border = '2px solid #e0e0e0');
+            card.style.border = '2px solid #007bff';
+            selectedCard = parseInt(card.dataset.designIndex);
+            enableDownloadButton();
+        }
+
+        function enableDownloadButton() {
+            const downloadButton = document.getElementById('download-button');
+            downloadButton.style.opacity = 1;
+            downloadButton.style.pointerEvents = 'auto';
+        }
+
+        function disableDownloadButton() {
+            const downloadButton = document.getElementById('download-button');
+            downloadButton.style.opacity = 0.5;
+            downloadButton.style.pointerEvents = 'none';
+        }
 
         document.getElementById('download-button').addEventListener('click', function() {
             const enteredCode = document.getElementById('payment-code').value;
             const errorMessageElement = document.getElementById('error-message');
 
-            if (enteredCode === correctPaymentCode) {
-                downloadCard();
-                errorMessageElement.textContent = ""; // Clear any previous error
+            if (!selectedCard && enteredCode) { // Check if a card is selected
+              errorMessageElement.textContent = "Please select a card design.";
+              return;
+            }
+
+            if (paymentCodes.includes(enteredCode) && !usedPaymentCodes.includes(enteredCode)) {
+                downloadCard(selectedCard);
+                usedPaymentCodes.push(enteredCode);
+                errorMessageElement.textContent = "";
+            } else if (usedPaymentCodes.includes(enteredCode)) {
+                errorMessageElement.textContent = "This code has already been used.";
             } else {
                 errorMessageElement.textContent = "Incorrect Payment Code";
             }
@@ -307,21 +318,20 @@
             }
         }
 
-        function downloadCard() {
-            const cardElement = document.getElementById('card-preview');
-
-            html2canvas(cardElement).then(canvas => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/jpeg');
-                link.download = 'student_id_card.jpg';
-                link.click();
-            });
+        function downloadCard(cardIndex) {
+            const cards = document.querySelectorAll('.card');
+            if (cardIndex >= 0 && cardIndex < cards.length) {
+                const card = cards[cardIndex];
+                html2canvas(card).then(canvas => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/jpeg');
+                    link.download = `student_id_card_design_${cardIndex + 1}.jpg`;
+                    link.click();
+                });
+            }
         }
     </script>
 
 </body>
 
 </html>
-
-
-
