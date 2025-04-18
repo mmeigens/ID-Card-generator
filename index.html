@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ID Card Generator</title>
+  <title>Enhanced ID Card Generator</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body {
@@ -29,15 +29,35 @@
     }
 
     .id-card {
-      border: 1px solid #ccc;
       border-radius: 10px;
       text-align: center;
       padding: 15px;
       cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .id-card.selected {
       border: 2px solid #4a90e2;
+    }
+
+    .design1 {
+      background: linear-gradient(to bottom, #4a90e2, #ffffff);
+      color: #ffffff;
+    }
+
+    .design2 {
+      background: linear-gradient(to bottom, #e74c3c, #ffffff);
+      color: #ffffff;
+    }
+
+    .design3 {
+      background: linear-gradient(to bottom, #27ae60, #ffffff);
+      color: #ffffff;
+    }
+
+    .design4 {
+      background: linear-gradient(to bottom, #8e44ad, #ffffff);
+      color: #ffffff;
     }
 
     button {
@@ -81,5 +101,6 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
