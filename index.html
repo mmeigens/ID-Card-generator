@@ -1,157 +1,17 @@
-// Sets to track used and valid codes
-const usedCodes = new Set();
-const validCodes = new Set(['ABC123', 'CODE5678', 'CODE9012']); // Predefined codes
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ID Card Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    /* Add your styles here */
+  </style>
+</head>
+<body>
+  <!-- Your HTML content -->
+  <script src="script.js"></script>
+</body>
+</html>
 
-// DOM element references
-const firstNameInput = document.getElementById('firstName');
-const lastNameInput = document.getElementById('lastName');
-const phoneNumberInput = document.getElementById('phoneNumber');
-const photoUploadInput = document.getElementById('photoUpload');
-const downloadCodeInput = document.getElementById('downloadCode');
-const generateBtn = document.getElementById('generateBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const idCardsContainer = document.getElementById('idCardsContainer');
-
-// Error message elements
-const firstNameError = document.getElementById('firstNameError');
-const lastNameError = document.getElementById('lastNameError');
-const phoneError = document.getElementById('phoneError');
-const photoError = document.getElementById('photoError');
-const codeError = document.getElementById('codeError');
-
-let selectedCard = null;
-let selectedCardElement = null;
-
-// Image preview functionality
-photoUploadInput.addEventListener('change', () => {
-  const file = photoUploadInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      // Create or update the preview image
-      let previewImg = document.getElementById('photoPreview');
-      if (!previewImg) {
-        previewImg = document.createElement('img');
-        previewImg.id = 'photoPreview';
-        previewImg.style.width = '100px';
-        previewImg.style.height = '100px';
-        previewImg.style.objectFit = 'cover';
-        previewImg.style.marginTop = '10px';
-        photoUploadInput.parentNode.appendChild(previewImg);
-      }
-      previewImg.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// Generate ID cards
-generateBtn.addEventListener('click', () => {
-  // Clear previous errors
-  firstNameError.textContent = '';
-  lastNameError.textContent = '';
-  phoneError.textContent = '';
-  photoError.textContent = '';
-  codeError.textContent = '';
-
-  // Retrieve input values
-  const firstName = firstNameInput.value.trim();
-  const lastName = lastNameInput.value.trim();
-  const phoneNumber = phoneNumberInput.value.trim();
-  const photo = photoUploadInput.files[0];
-  const code = downloadCodeInput.value.trim();
-
-  let isValid = true;
-
-  // Validate inputs
-  if (!firstName) {
-    firstNameError.textContent = 'First name is required.';
-    isValid = false;
-  }
-
-  if (!lastName) {
-    lastNameError.textContent = 'Last name is required.';
-    isValid = false;
-  }
-
-  if (!phoneNumber) {
-    phoneError.textContent = 'Phone number is required.';
-    isValid = false;
-  }
-
-  if (!photo) {
-    photoError.textContent = 'Photo is required.';
-    isValid = false;
-  }
-
-  if (!code) {
-    codeError.textContent = 'Download code is required.';
-    isValid = false;
-  } else if (!validCodes.has(code)) {
-    codeError.textContent = 'Invalid download code.';
-    isValid = false;
-  } else if (usedCodes.has(code)) {
-    codeError.textContent = 'This code has already been used.';
-    isValid = false;
-  }
-
-  if (!isValid) return;
-
-  // Clear previous ID cards
-  idCardsContainer.innerHTML = '';
-  selectedCard = null;
-  selectedCardElement = null;
-  downloadBtn.disabled = true;
-
-  // Read the uploaded photo
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const photoDataURL = e.target.result;
-
-    // Generate 4 ID card designs
-    for (let i = 1; i <= 4; i++) {
-      const card = document.createElement('div');
-      card.classList.add('id-card', `design${i}`);
-      card.innerHTML = `
-        <div style="padding: 10px; font-family: Arial, sans-serif;">
-          <img src="${photoDataURL}" alt="Student Photo" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;" />
-          <h3 style="margin: 5px 0;">${firstName} ${lastName}</h3>
-          <p style="margin: 2px 0;">Phone: ${phoneNumber}</p>
-          <p style="margin: 2px 0;">Class: Systematic Theology</p>
-          <p style="margin: 2px 0;">Student Code: ${firstName.slice(0, 2).toUpperCase() + phoneNumber.slice(-4)}</p>
-        </div>
-      `;
-      card.addEventListener('click', () => {
-        // Deselect previous selection
-        if (selectedCardElement) {
-          selectedCardElement.classList.remove('selected');
-        }
-        // Select current card
-        card.classList.add('selected');
-        selectedCard = card;
-        selectedCardElement = card;
-        downloadBtn.disabled = false;
-      });
-      idCardsContainer.appendChild(card);
-    }
-  };
-  reader.readAsDataURL(photo);
-});
-
-// Download selected ID card
-downloadBtn.addEventListener('click', () => {
-  if (!selectedCard) return;
-
-  const code = downloadCodeInput.value.trim();
-
-  // Mark code as used
-  usedCodes.add(code);
-
-  // Use html2canvas to capture the selected card
-  html2canvas(selectedCard, { backgroundColor: null }).then((canvas) => {
-    const link = document.createElement('a');
-    link.download = 'id_card.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  });
-});
