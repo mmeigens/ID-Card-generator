@@ -1,106 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enhanced ID Card Generator</title>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+// DOM element references
+const firstNameInput = document.getElementById('firstName');
+const lastNameInput = document.getElementById('lastName');
+const phoneNumberInput = document.getElementById('phoneNumber');
+const addressInput = document.getElementById('address');
+const bloodTypeInput = document.getElementById('bloodType');
+const photoUploadInput = document.getElementById('photoUpload');
+const generateBtn = document.getElementById('generateBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const idCardsContainer = document.getElementById('idCardsContainer');
+
+// Error message elements
+const firstNameError = document.getElementById('firstNameError');
+const lastNameError = document.getElementById('lastNameError');
+const phoneError = document.getElementById('phoneError');
+const addressError = document.getElementById('addressError');
+const bloodTypeError = document.getElementById('bloodTypeError');
+const photoError = document.getElementById('photoError');
+
+let selectedCard = null;
+let selectedCardElement = null;
+
+// Image preview functionality
+photoUploadInput.addEventListener('change', () => {
+  const file = photoUploadInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      let previewImg = document.getElementById('photoPreview');
+      if (!previewImg) {
+        previewImg = document.createElement('img');
+        previewImg.id = 'photoPreview';
+        previewImg.style.width = '100px';
+        previewImg.style.height = '100px';
+        previewImg.style.objectFit = 'cover';
+        previewImg.style.marginTop = '10px';
+        photoUploadInput.parentNode.appendChild(previewImg);
+      }
+      previewImg.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Generate ID cards
+generateBtn.addEventListener('click', () => {
+  // Clear previous errors
+  firstNameError.textContent = '';
+  lastNameError.textContent = '';
+  phoneError.textContent = '';
+  addressError.textContent = '';
+  bloodTypeError.textContent = '';
+  photoError.textContent = '';
+
+  // Retrieve input values
+  const firstName = firstNameInput.value.trim();
+  const lastName = lastNameInput.value.trim();
+  const phoneNumber = phoneNumberInput.value.trim();
+  const address = addressInput.value.trim();
+  const bloodType = bloodTypeInput.value.trim();
+  const photo = photoUploadInput.files[0];
+
+  let isValid = true;
+
+  // Validate inputs
+  if (!firstName) {
+    firstNameError.textContent = 'First name is required.';
+    isValid = false;
+  }
+
+  if (!lastName) {
+    lastNameError.textContent = 'Last name is required.';
+    isValid = false;
+  }
+
+  if (!phoneNumber) {
+    phoneError.textContent = 'Phone number is required.';
+    isValid = false;
+  }
+
+  if (!address) {
+    addressError.textContent = 'Address is required.';
+    isValid = false;
+  }
+
+  if (!bloodType) {
+    bloodTypeError.textContent = 'Blood type is required.';
+    isValid = false;
+  }
+
+  if (!photo) {
+    photoError.textContent = 'Photo is required.';
+    isValid = false;
+  }
+
+  if (!isValid) return;
+
+  // Clear previous ID cards
+  idCardsContainer.innerHTML = '';
+  selectedCard = null;
+  selectedCardElement = null;
+  downloadBtn.disabled = true;
+
+  // Read the uploaded photo
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const photoDataURL = e.target.result;
+
+    // Generate 4 ID card designs
+    for (let i = 1; i <= 4; i++) {
+      const card = document.createElement('div');
+      card.classList.add('id-card', `design${i}`);
+      card.innerHTML = `
+        <div style="padding: 15px; font-family: Arial, sans-serif; background-color: #f9f9f9; border: 2px solid #ddd; border-radius: 10px;">
+          <h2 style="margin-bottom: 10px; color: #4a90e2;">God's Embassy Ministries</h2>
+          <img src="${photoDataURL}" alt="Student Photo" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;" />
+          <h3 style="margin: 5px 0;">${firstName} ${lastName}</h3>
+          <p style="margin: 2px 0; color: #555;">Phone: ${phoneNumber}</p>
+          <p style="margin: 2px 0; color: #555;">Address: ${address}</p>
+          <p style="margin: 2px 0; color: #555;">Blood Type: ${bloodType}</p>
+          <p style="margin: 2px 0; color: #555;">Class: Systematic Theology</p>
+          <p style="margin: 2px 0; color: #e74c3c;">Student Code: ${firstName.slice(0, 2).toUpperCase() + phoneNumber.slice(-4)}</p>
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        if (selectedCardElement) {
+          selectedCardElement.classList.remove('selected');
+        }
+        card.classList.add('selected');
+        selectedCard = card;
+        selectedCardElement = card;
+        downloadBtn.disabled = false;
+      });
+      idCardsContainer.appendChild(card);
     }
+  };
+  reader.readAsDataURL(photo);
+});
 
-    .form-container {
-      margin-bottom: 20px;
-    }
+// Download selected ID card
+downloadBtn.addEventListener('click', () => {
+  if (!selectedCard) return;
 
-    .id-cards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 15px;
-      width: 100%;
-      max-width: 800px;
-    }
+  html2canvas(selectedCard, { backgroundColor: null }).then((canvas) => {
+    const link = document.createElement('a');
+    link.download = 'id_card.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+});
 
-    .id-card {
-      border-radius: 10px;
-      text-align: center;
-      padding: 15px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .id-card.selected {
-      border: 2px solid #4a90e2;
-    }
-
-    .design1 {
-      background: linear-gradient(to bottom, #4a90e2, #ffffff);
-      color: #ffffff;
-    }
-
-    .design2 {
-      background: linear-gradient(to bottom, #e74c3c, #ffffff);
-      color: #ffffff;
-    }
-
-    .design3 {
-      background: linear-gradient(to bottom, #27ae60, #ffffff);
-      color: #ffffff;
-    }
-
-    .design4 {
-      background: linear-gradient(to bottom, #8e44ad, #ffffff);
-      color: #ffffff;
-    }
-
-    button {
-      margin: 10px 5px;
-      padding: 10px 15px;
-      background-color: #4a90e2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      background-color: #bbb;
-      cursor: not-allowed;
-    }
-
-    img {
-      max-width: 100px;
-      height: auto;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
-  </style>
-</head>
-<body>
-  <h1>ID Card Generator</h1>
-
-  <div class="form-container">
-    <input type="text" id="firstName" placeholder="Enter First Name"><br>
-    <input type="text" id="lastName" placeholder="Enter Last Name"><br>
-    <input type="text" id="phoneNumber" placeholder="Enter Phone Number"><br>
-    <input type="file" id="photoUpload" accept="image/*"><br>
-    <button id="generateBtn">Generate ID Cards</button>
-  </div>
-
-  <div class="id-cards-container" id="idCardsContainer"></div>
-
-  <button id="downloadBtn" disabled>Download Selected ID Card</button>
-
-  <script src="script.js"></script>
-</body>
-</html>
 
 
 
